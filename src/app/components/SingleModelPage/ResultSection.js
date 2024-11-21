@@ -47,7 +47,7 @@ const ResultSection = ({
           />
         </div>
       ) : (
-        <div className="border-2 border-dashed border-gray-700 rounded-lg h-[45vh] md:h-[70vh] relative">
+        <div className="border-2 border-dashed border-gray-700 rounded-lg h-[40vh] md:h-[70vh] relative">
           {isProcessing ? (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
