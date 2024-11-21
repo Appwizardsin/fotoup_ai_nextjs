@@ -1,5 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import { AuthProvider } from './context/AuthContext';
+import Header from './components/Header';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -23,8 +25,12 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <AuthProvider>
+          <Header />
+          {children}
+        </AuthProvider>
       </body>
+      <script src="https://accounts.google.com/gsi/client" async defer></script>
     </html>
   );
 }
