@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { FiChevronLeft, FiChevronRight, FiDownload, FiX } from "react-icons/fi";
 import withAuth from "../components/withAuth";
 import { users } from "@/services/api";
+import Image from "next/image";
 
 function MyImagesPage({ user }) {
   const [images, setImages] = useState([]);
@@ -91,7 +92,7 @@ function MyImagesPage({ user }) {
 
         {images.length === 0 ? (
           <div className="text-center text-gray-400 py-12">
-            <p>You haven't generated any images yet.</p>
+            <p>You haven&apos;t generated any images yet.</p>
           </div>
         ) : (
           <>
@@ -103,6 +104,8 @@ function MyImagesPage({ user }) {
                   onClick={() => setSelectedImage(image)}
                 >
                   <Image
+                    width={100}
+                    height={100}
                     src={cleanImageUrl(image.url)}
                     alt="Generated image"
                     className="w-full h-64 object-cover"
@@ -144,6 +147,8 @@ function MyImagesPage({ user }) {
                   </button>
                   <div className="h-full overflow-auto">
                     <Image
+                      width={400}
+                      height={400}
                       src={cleanImageUrl(selectedImage.url)}
                       alt="Selected image"
                       className="w-60 h-auto rounded-lg"

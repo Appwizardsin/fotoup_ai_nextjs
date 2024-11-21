@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useEffect } from "react";
 import withAuth from "../components/withAuth";
@@ -16,7 +16,9 @@ function MySubscriptionPage({ user }) {
         const response = await users.getSubscription();
         setSubscription(response.subscription);
       } catch (err) {
-        setError(err.response?.data?.message || "Failed to load subscription details");
+        setError(
+          err.response?.data?.message || "Failed to load subscription details"
+        );
         console.error(err);
       } finally {
         setLoading(false);
@@ -64,8 +66,12 @@ function MySubscriptionPage({ user }) {
     return (
       <div className="container mx-auto px-4 py-12">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-white mb-4">No Active Subscription</h1>
-          <p className="text-gray-400 mb-8">You don't have an active subscription.</p>
+          <h1 className="text-3xl font-bold text-white mb-4">
+            No Active Subscription
+          </h1>
+          <p className="text-gray-400 mb-8">
+            You don&apos;t have an active subscription.
+          </p>
           <a
             href="/subscription"
             className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
@@ -78,10 +84,10 @@ function MySubscriptionPage({ user }) {
   }
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
@@ -89,12 +95,14 @@ function MySubscriptionPage({ user }) {
     <div className="container mx-auto px-4 py-12">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl font-bold text-white mb-8">My Subscription</h1>
-        
+
         <div className="bg-gray-800 rounded-xl p-8 mb-8">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-2xl font-bold text-white mb-2">
-                {subscription.customData.planType.charAt(0).toUpperCase() + subscription.customData.planType.slice(1)} Plan
+                {subscription.customData.planType.charAt(0).toUpperCase() +
+                  subscription.customData.planType.slice(1)}{" "}
+                Plan
               </h2>
               <p className="text-gray-400">
                 {subscription.billingCycle.interval}ly billing
@@ -102,13 +110,23 @@ function MySubscriptionPage({ user }) {
             </div>
             <div className="text-right">
               <div className="text-2xl font-bold text-white mb-1">
-                ${(parseInt(subscription.items[0].price.unitPrice.amount) / 100).toFixed(2)}
-                <span className="text-gray-400 text-base font-normal">/{subscription.billingCycle.interval}</span>
+                $
+                {(
+                  parseInt(subscription.items[0].price.unitPrice.amount) / 100
+                ).toFixed(2)}
+                <span className="text-gray-400 text-base font-normal">
+                  /{subscription.billingCycle.interval}
+                </span>
               </div>
-              <span className={`inline-block px-3 py-1 rounded-full text-sm ${
-                subscription.status === 'active' ? 'bg-green-500/20 text-green-500' : 'bg-yellow-500/20 text-yellow-500'
-              }`}>
-                {subscription.status.charAt(0).toUpperCase() + subscription.status.slice(1)}
+              <span
+                className={`inline-block px-3 py-1 rounded-full text-sm ${
+                  subscription.status === "active"
+                    ? "bg-green-500/20 text-green-500"
+                    : "bg-yellow-500/20 text-yellow-500"
+                }`}
+              >
+                {subscription.status.charAt(0).toUpperCase() +
+                  subscription.status.slice(1)}
               </span>
             </div>
           </div>
@@ -118,13 +136,16 @@ function MySubscriptionPage({ user }) {
               <div>
                 <h3 className="text-gray-400 mb-2">Current Period</h3>
                 <p className="text-white">
-                  {formatDate(subscription.currentBillingPeriod.startsAt)} - {formatDate(subscription.currentBillingPeriod.endsAt)}
+                  {formatDate(subscription.currentBillingPeriod.startsAt)} -{" "}
+                  {formatDate(subscription.currentBillingPeriod.endsAt)}
                 </p>
               </div>
               {subscription.nextBilledAt && (
                 <div>
                   <h3 className="text-gray-400 mb-2">Next Billing Date</h3>
-                  <p className="text-white">{formatDate(subscription.nextBilledAt)}</p>
+                  <p className="text-white">
+                    {formatDate(subscription.nextBilledAt)}
+                  </p>
                 </div>
               )}
             </div>
@@ -135,26 +156,28 @@ function MySubscriptionPage({ user }) {
           {subscription.requestedCancellation ? (
             <div>
               <p className="text-gray-400 mb-4">
-                Your subscription will be cancelled at the end of the current billing period.
+                Your subscription will be cancelled at the end of the current
+                billing period.
               </p>
               <p className="text-gray-400">
-                Access will remain until: {formatDate(subscription.currentBillingPeriod.endsAt)}
+                Access will remain until:{" "}
+                {formatDate(subscription.currentBillingPeriod.endsAt)}
               </p>
             </div>
           ) : (
             <>
               <button
                 onClick={handleCancelSubscription}
-                disabled={cancelling || subscription.status !== 'active'}
+                disabled={cancelling || subscription.status !== "active"}
                 className={`px-6 py-2 rounded-lg ${
-                  cancelling || subscription.status !== 'active'
-                    ? 'bg-gray-600 cursor-not-allowed'
-                    : 'bg-red-600 hover:bg-red-700'
+                  cancelling || subscription.status !== "active"
+                    ? "bg-gray-600 cursor-not-allowed"
+                    : "bg-red-600 hover:bg-red-700"
                 } text-white transition-colors`}
               >
-                {cancelling ? 'Cancelling...' : 'Cancel Subscription'}
+                {cancelling ? "Cancelling..." : "Cancel Subscription"}
               </button>
-              {subscription.status !== 'active' && (
+              {subscription.status !== "active" && (
                 <p className="text-gray-400 mt-2">
                   Your subscription is not active and cannot be cancelled.
                 </p>
@@ -167,4 +190,4 @@ function MySubscriptionPage({ user }) {
   );
 }
 
-export default withAuth(MySubscriptionPage); 
+export default withAuth(MySubscriptionPage);

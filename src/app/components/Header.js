@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import {
   FiMenu,
   FiX,
@@ -14,7 +15,6 @@ import {
   FiCreditCard,
 } from "react-icons/fi";
 import { FaCoins } from "react-icons/fa";
-
 
 const Header = () => {
   const { user, signOut, loading } = useAuth();
@@ -46,6 +46,8 @@ const Header = () => {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
+              width={150}
+              height={35}
               src="/fotup_logo.png" // Assuming the image is named logo.png and is in the public folder
               alt="Logo"
               className="md:w-[150px] md:h-[35px] w-[80px] h-[20px] object-contain"
