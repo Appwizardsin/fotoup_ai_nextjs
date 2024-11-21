@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
+import Image from "next/image";
 import { FiDownload } from "react-icons/fi";
 
 const ResultSection = ({
@@ -37,7 +37,7 @@ const ResultSection = ({
           )}
         </div>
       ) : processedImage ? (
-        <div className="border-2 border-dashed border-gray-700 rounded-lg h-[100vh] md:h-[80vh] relative">
+        <div className="border-2 border-dashed border-gray-700 rounded-lg h-[60vh] md:h-[70vh] relative">
           <Image
             src={processedImage}
             alt="Processed Result"
@@ -46,7 +46,7 @@ const ResultSection = ({
           />
         </div>
       ) : (
-        <div className="border-2 border-dashed border-gray-700 rounded-lg h-[30vh] md:h-96 relative">
+        <div className="border-2 border-dashed border-gray-700 rounded-lg h-[45vh] md:h-[70vh] relative">
           {isProcessing ? (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
@@ -72,4 +72,4 @@ const ResultSection = ({
   );
 };
 
-export default ResultSection; 
+export default ResultSection;

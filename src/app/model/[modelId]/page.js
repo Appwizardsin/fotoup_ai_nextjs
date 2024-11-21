@@ -87,9 +87,18 @@ export default function SingleModelPage() {
     }
   };
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (processedImage) {
-      window.open(processedImage, "_blank");
+      const image = await fetch(processedImage);
+      const imageBlog = await image.blob();
+      const imageURL = URL.createObjectURL(imageBlog);
+
+      const link = document.createElement("a");
+      link.href = imageURL;
+      link.download = "image.jpg";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   };
 
