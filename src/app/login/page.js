@@ -5,11 +5,13 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import AuthForm from "../components/AuthForm";
 import { auth } from "@/services/api";
+import { useAuth } from "../context/AuthContext";
 
 export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { signIn } = useAuth();
 
   const handleGoogleSignIn = async () => {
     try {
@@ -24,7 +26,7 @@ export default function LoginPage() {
             try {
               const result = await auth.googleLogin(response.access_token);
               if (result.token) {
-                localStorage.setItem("token", result.token);
+                await signIn(result.token);
                 router.push("/");
               }
             } catch (error) {
