@@ -9,6 +9,7 @@ const ResultSection = ({
   isProcessing,
   model,
   handleDownload,
+  progress,
 }) => {
   return (
     <div>
@@ -50,8 +51,29 @@ const ResultSection = ({
           {isProcessing ? (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-2"></div>
-                <p className="text-gray-400">Processing...</p>
+                {/* Loading bar */}
+                <div className="relative pt-1">
+                  <div className="flex mb-2 items-center justify-between">
+                    <div>
+                      <span className="text-xs font-semibold inline-block py-1 uppercase">
+                        Processing...
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-xs font-semibold inline-block py-1 uppercase">
+                        {progress}%
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex mb-2 items-center justify-between">
+                    <div className="w-full bg-gray-200 rounded-full h-2.5 mb-2">
+                      <div
+                        className="bg-blue-600 h-2.5 rounded-full"
+                        style={{ width: `${progress}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           ) : model.mainImage ? (

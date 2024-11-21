@@ -21,6 +21,7 @@ export default function SingleModelPage() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [error, setError] = useState(null);
   const [inputs, setInputs] = useState({});
+  const [processingImageProgress, setProcessingImageProgress] = useState(0);
 
   useEffect(() => {
     const fetchModel = async () => {
@@ -68,6 +69,16 @@ export default function SingleModelPage() {
         ...inputs,
       };
 
+      const interval = setInterval(() => {
+        setProcessingImageProgress((prev) => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            return 100;
+          }
+          return prev >= 90 ? prev + 2 : prev + 10;
+        });
+      }, 1200);
+
       const data = await models.run(requestData);
 
       if (data.imageUrl) {
@@ -76,6 +87,7 @@ export default function SingleModelPage() {
         const imageUrl = URL.createObjectURL(data);
         setProcessedImage(imageUrl);
       }
+      clearInterval(interval);
     } catch (error) {
       console.error("Error processing image:", error);
       setError({
@@ -84,6 +96,7 @@ export default function SingleModelPage() {
       });
     } finally {
       setIsProcessing(false);
+      setProcessingImageProgress(0);
     }
   };
 
@@ -166,6 +179,7 @@ export default function SingleModelPage() {
             isProcessing={isProcessing}
             model={model}
             handleDownload={handleDownload}
+            progress={processingImageProgress}
           />
         </div>
 
