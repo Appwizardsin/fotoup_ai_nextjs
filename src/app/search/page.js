@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { FiSearch, FiLoader } from 'react-icons/fi';
-import ModelCard from '../components/ModelCard';
-import { models } from '@/services/api';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { FiSearch, FiLoader } from "react-icons/fi";
+import ModelCard from "../components/ModelCard";
+import { models } from "@/services/api";
 
 export default function SearchPage() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [modelList, setModelList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [debouncedQuery, setDebouncedQuery] = useState('');
+  const [debouncedQuery, setDebouncedQuery] = useState("");
 
   // Debounce search query
   useEffect(() => {
@@ -28,14 +28,14 @@ export default function SearchPage() {
       try {
         setLoading(true);
         setError(null);
-        const response = await models.getAll({ 
+        const response = await models.getAll({
           search: debouncedQuery,
-          sort: 'popularity'
+          sort: "popularity",
         });
         setModelList(response);
       } catch (err) {
-        console.error('Error fetching models:', err);
-        setError('Failed to load models');
+        console.error("Error fetching models:", err);
+        setError("Failed to load models");
       } finally {
         setLoading(false);
       }
@@ -62,7 +62,7 @@ export default function SearchPage() {
       {error && (
         <div className="text-center text-red-500 py-4">
           {error}
-          <button 
+          <button
             onClick={() => window.location.reload()}
             className="ml-2 text-blue-500 hover:text-blue-400"
           >
@@ -78,19 +78,18 @@ export default function SearchPage() {
         </div>
       ) : modelList.length === 0 ? (
         <div className="text-center text-gray-400 py-8">
-          {searchQuery 
-            ? "No models found matching your search" 
-            : "Start typing to search models"
-          }
+          {searchQuery
+            ? "No models found matching your search"
+            : "Start typing to search models"}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-2 md:gap-6">
           {modelList.map((model) => (
             <Link href={`/model/${model._id}`} key={model._id}>
               <ModelCard
-                title={model.title}
+                title={model.name}
                 description={model.description}
-                imageUrl={model.imageUrl}
+                imageUrl={model.mainImage}
                 runCount={model.runCount}
               />
             </Link>
@@ -99,4 +98,4 @@ export default function SearchPage() {
       )}
     </div>
   );
-} 
+}
