@@ -28,14 +28,19 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const signIn = async (token) => {
+    localStorage.setItem("token", token);
+    await checkAuth();
+  };
+
   const signOut = () => {
     localStorage.removeItem("token");
     setUser(null);
-    window.location.href = "/login";
+    checkAuth();
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, signOut, checkAuth }}>
+    <AuthContext.Provider value={{ user, loading, signOut, signIn, checkAuth }}>
       {children}
     </AuthContext.Provider>
   );

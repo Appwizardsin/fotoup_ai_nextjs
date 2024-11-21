@@ -1,7 +1,9 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
 
 const AuthForm = ({
   mode = "login",
@@ -15,6 +17,8 @@ const AuthForm = ({
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { checkAuth } = useAuth();
+  const router = useRouter();
 
   const isLogin = mode === "login";
   const isSignUp = mode === "signup";
@@ -23,6 +27,7 @@ const AuthForm = ({
     e.preventDefault();
     const data = isLogin ? { email, password } : { name, email, password };
     await onSubmit(data);
+    checkAuth();
   };
 
   return (
@@ -42,9 +47,7 @@ const AuthForm = ({
           <div className="w-full border-t border-gray-700"></div>
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2  text-gray-400">
-            Or continue with email
-          </span>
+          <span className="px-2  text-gray-400">Or continue with email</span>
         </div>
       </div>
 
@@ -119,4 +122,4 @@ const AuthForm = ({
   );
 };
 
-export default AuthForm; 
+export default AuthForm;

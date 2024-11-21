@@ -17,7 +17,7 @@ const createAPI = (token) => {
 
 // Helper to safely access localStorage (only in browser)
 const getToken = () => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     return localStorage.getItem("token");
   }
   return null;
@@ -123,7 +123,8 @@ export const users = {
 
 export const plans = {
   getAll: async () => {
-    const response = await publicAPI.get("/plans");
+    const api = createAPI(getToken());
+    const response = await api.get("/plans");
     return response.data;
   },
 };

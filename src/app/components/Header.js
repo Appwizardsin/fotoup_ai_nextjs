@@ -92,13 +92,17 @@ const Header = () => {
             <Link href="/search" className="text-white hover:text-gray-300">
               Search
             </Link>
-            <Link href="/my-images" className="text-white hover:text-gray-300">
-              My Images
-            </Link>
             {loading ? (
               <div className="w-[200px] h-[40px] bg-gray-700 animate-pulse rounded-lg"></div>
             ) : user ? (
               <div className="flex items-center gap-4">
+                <Link
+                  href="/my-images"
+                  className="text-white hover:text-gray-300"
+                >
+                  My Images
+                </Link>
+
                 {/* Credits Display */}
                 <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-700 rounded-full">
                   <FaCoins className="text-yellow-400 w-4 h-4" />
@@ -205,17 +209,17 @@ const Header = () => {
               >
                 Search
               </Link>
-              <Link
-                href="/my-images"
-                className="text-white hover:text-gray-300"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                My Images
-              </Link>
               {loading ? (
                 <div className="w-full h-[40px] bg-gray-700 animate-pulse rounded-lg"></div>
               ) : user ? (
                 <>
+                  <Link
+                    href="/my-images"
+                    className="text-white hover:text-gray-300"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    My Images
+                  </Link>
                   <Link
                     href="/my-subscription"
                     className="flex items-center gap-2 text-white hover:text-gray-300"
