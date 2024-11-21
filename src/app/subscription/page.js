@@ -1,13 +1,15 @@
-'use client';
+"use client";
 
 import { useState, useEffect } from "react";
 import { FaCoins, FaCheck } from "react-icons/fa";
 import { users, plans as plansApi } from "@/services/api";
 import ProcessingModal from "../components/ProcessingModal";
 import AuthForm from "../components/AuthForm";
+import AuthModal from "../components/AuthModal";
+import { useAuth } from "../context/AuthContext";
 
 export default function SubscriptionPage() {
-  const [user, setUser] = useState(null);
+  const { user } = useAuth(null);
   const [billingCycle, setBillingCycle] = useState("monthly");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,48 +18,45 @@ export default function SubscriptionPage() {
   const [showProcessingModal, setShowProcessingModal] = useState(false);
   const [plans, setPlans] = useState([]);
 
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const plansResponse = await plansApi.getAll();
+      // Ensure plans is an array
+      const plansArray = Array.isArray(plansResponse)
+        ? plansResponse
+        : plansResponse.data
+        ? plansResponse.data
+        : plansResponse.plans
+        ? plansResponse.plans
+        : [];
+
+      // Add default values for missing properties
+      const processedPlans = plansArray.map((plan) => ({
+        id: plan.id || "",
+        name: plan.name || "",
+        credits: plan.credits || 0,
+        monthlyPrice: plan.monthlyPrice || 0,
+        yearlyPrice: plan.yearlyPrice || 0,
+        features: plan.features || [],
+        recommended: plan.recommended || false,
+        currentPlan: plan.currentPlan || false,
+        upgrade: plan.upgrade || false,
+        downgrade: plan.downgrade || false,
+        paddlePlanId: plan.paddlePlanId || { monthly: "", yearly: "" },
+        buttonText: plan.buttonText || "",
+      }));
+
+      setPlans(processedPlans);
+    } catch (err) {
+      console.error("Error fetching data:", err);
+      setError("Failed to load plans");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        // Get user profile if token exists
-        const token = localStorage.getItem('token');
-        if (token) {
-          const userProfile = await users.getProfile();
-          setUser(userProfile);
-        }
-        
-        const plansResponse = await plansApi.getAll();
-        // Ensure plans is an array
-        const plansArray = Array.isArray(plansResponse) ? plansResponse : 
-                          plansResponse.data ? plansResponse.data : 
-                          plansResponse.plans ? plansResponse.plans : [];
-        
-        // Add default values for missing properties
-        const processedPlans = plansArray.map(plan => ({
-          id: plan.id || '',
-          name: plan.name || '',
-          credits: plan.credits || 0,
-          monthlyPrice: plan.monthlyPrice || 0,
-          yearlyPrice: plan.yearlyPrice || 0,
-          features: plan.features || [],
-          recommended: plan.recommended || false,
-          currentPlan: plan.currentPlan || false,
-          upgrade: plan.upgrade || false,
-          downgrade: plan.downgrade || false,
-          paddlePlanId: plan.paddlePlanId || { monthly: '', yearly: '' },
-          buttonText: plan.buttonText || '',
-        }));
-
-        setPlans(processedPlans);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-        setError("Failed to load plans");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -274,110 +273,88 @@ export default function SubscriptionPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {plans.map((plan) => {
-            const buttonConfig = getButtonConfig(plan);
-            const price = getPlanPrice(plan);
+          {Array.isArray(plans) &&
+            plans.map((plan) => {
+              const buttonConfig = getButtonConfig(plan);
+              const price = getPlanPrice(plan);
 
-            return (
-              <div
-                key={plan.id}
-                className={`relative bg-gray-800 rounded-xl p-8 ${
-                  plan.recommended
-                    ? "border-2 border-blue-500 shadow-lg"
-                    : "border border-gray-700"
-                }`}
-              >
-                {plan.recommended && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm">
-                      Recommended
-                    </span>
-                  </div>
-                )}
-
-                <div className="text-center mb-8">
-                  <h3 className="text-xl font-bold text-white mb-2">
-                    {plan.name}
-                  </h3>
-                  <div className="flex items-center justify-center gap-2 mb-4">
-                    <FaCoins className="text-yellow-400 w-5 h-5" />
-                    <span className="text-2xl font-bold text-white">
-                      {plan.credits}
-                    </span>
-                    <span className="text-gray-400">credits/month</span>
-                  </div>
-                  <div className="text-3xl font-bold text-white">
-                    ${price.toFixed(2)}
-                    <span className="text-gray-400 text-base font-normal">
-                      /{billingCycle === "yearly" ? "year" : "month"}
-                    </span>
-                  </div>
-                  {billingCycle === "yearly" && plan.yearlyPrice > 0 && (
-                    <div className="text-sm text-green-400 mt-1">
-                      Save $
-                      {(plan.monthlyPrice * 12 - plan.yearlyPrice).toFixed(2)} a
-                      year
+              return (
+                <div
+                  key={plan.id}
+                  className={`relative bg-gray-800 rounded-xl p-8 ${
+                    plan.recommended
+                      ? "border-2 border-blue-500 shadow-lg"
+                      : "border border-gray-700"
+                  }`}
+                >
+                  {plan.recommended && (
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                      <span className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm">
+                        Recommended
+                      </span>
                     </div>
                   )}
+
+                  <div className="text-center mb-8">
+                    <h3 className="text-xl font-bold text-white mb-2">
+                      {plan.name}
+                    </h3>
+                    <div className="flex items-center justify-center gap-2 mb-4">
+                      <FaCoins className="text-yellow-400 w-5 h-5" />
+                      <span className="text-2xl font-bold text-white">
+                        {plan.credits}
+                      </span>
+                      <span className="text-gray-400">credits/month</span>
+                    </div>
+                    <div className="text-3xl font-bold text-white">
+                      ${price.toFixed(2)}
+                      <span className="text-gray-400 text-base font-normal">
+                        /{billingCycle === "yearly" ? "year" : "month"}
+                      </span>
+                    </div>
+                    {billingCycle === "yearly" && plan.yearlyPrice > 0 && (
+                      <div className="text-sm text-green-400 mt-1">
+                        Save $
+                        {(plan.monthlyPrice * 12 - plan.yearlyPrice).toFixed(2)}{" "}
+                        a year
+                      </div>
+                    )}
+                  </div>
+
+                  <ul className="space-y-4 mb-8">
+                    {plan.features.map((feature, index) => (
+                      <li
+                        key={index}
+                        className="flex items-center gap-2 text-gray-300"
+                      >
+                        <FaCheck className="text-green-400 flex-shrink-0" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button
+                    onClick={buttonConfig.onClick}
+                    disabled={buttonConfig.disabled}
+                    className={`w-full py-2 px-4 rounded-lg transition-colors ${buttonConfig.className}`}
+                  >
+                    {buttonConfig.text}
+                  </button>
                 </div>
-
-                <ul className="space-y-4 mb-8">
-                  {plan.features.map((feature, index) => (
-                    <li
-                      key={index}
-                      className="flex items-center gap-2 text-gray-300"
-                    >
-                      <FaCheck className="text-green-400 flex-shrink-0" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <button
-                  onClick={buttonConfig.onClick}
-                  disabled={buttonConfig.disabled}
-                  className={`w-full py-2 px-4 rounded-lg transition-colors ${buttonConfig.className}`}
-                >
-                  {buttonConfig.text}
-                </button>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
 
         {error && <div className="text-center mt-8 text-red-500">{error}</div>}
       </div>
 
       {showAuthModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-800 rounded-lg max-w-md w-full p-6">
-            <AuthForm
-              mode="login"
-              onSubmit={async (data) => {
-                try {
-                  const result = await auth.login(data);
-                  if (result.token) {
-                    localStorage.setItem("token", result.token);
-                    setShowAuthModal(false);
-                    window.location.reload();
-                  }
-                } catch (error) {
-                  setError(error.response?.data?.message || "Failed to sign in");
-                }
-              }}
-              onGoogleSignIn={async () => {
-                // Handle Google sign in
-              }}
-              loading={loading}
-              error={error}
-              onSwitchMode={() => {
-                // Handle mode switch
-              }}
-            />
-          </div>
-        </div>
+        <AuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+        />
       )}
       <ProcessingModal isOpen={showProcessingModal} />
     </>
   );
-} 
+}

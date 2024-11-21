@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -8,6 +8,7 @@ import ExampleSection from "@/app/components/SingleModelPage/ExampleSection";
 import InputField from "@/app/components/SingleModelPage/InputField";
 import ResultSection from "@/app/components/SingleModelPage/ResultSection";
 import ProcessButton from "@/app/components/SingleModelPage/ProcessButton";
+import AuthModal from "@/app/components/AuthModal";
 
 export default function SingleModelPage() {
   const { modelId } = useParams();
@@ -43,7 +44,7 @@ export default function SingleModelPage() {
 
   const handleProcessImage = async () => {
     if (!user) {
-      router.push('/login');
+      setShowAuthModal(true);
       return;
     }
 
@@ -193,6 +194,13 @@ export default function SingleModelPage() {
       <div className="mt-2 md:mt-8">
         <ExampleSection model={model} />
       </div>
+
+      {showAuthModal && (
+        <AuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+        />
+      )}
     </div>
   );
-} 
+}
