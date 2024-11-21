@@ -45,7 +45,7 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <img
+            <Image
               src="/fotup_logo.png" // Assuming the image is named logo.png and is in the public folder
               alt="Logo"
               className="md:w-[150px] md:h-[35px] w-[80px] h-[20px] object-contain"

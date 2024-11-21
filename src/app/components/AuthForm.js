@@ -94,7 +94,7 @@ const AuthForm = ({
         <div className="text-center text-gray-400">
           {isLogin ? (
             <p>
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <button
                 onClick={onSwitchMode}
                 className="text-blue-500 hover:text-blue-400"

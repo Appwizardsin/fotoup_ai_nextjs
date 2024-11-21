@@ -102,7 +102,7 @@ function MyImagesPage({ user }) {
                   className="relative group rounded-lg overflow-hidden bg-gray-800 cursor-pointer"
                   onClick={() => setSelectedImage(image)}
                 >
-                  <img
+                  <Image
                     src={cleanImageUrl(image.url)}
                     alt="Generated image"
                     className="w-full h-64 object-cover"
@@ -143,7 +143,7 @@ function MyImagesPage({ user }) {
                     <FiX className="w-6 h-6" />
                   </button>
                   <div className="h-full overflow-auto">
-                    <img
+                    <Image
                       src={cleanImageUrl(selectedImage.url)}
                       alt="Selected image"
                       className="w-60 h-auto rounded-lg"
