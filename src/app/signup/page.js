@@ -14,7 +14,6 @@ export default function SignUpPage() {
   const handleGoogleSignIn = async () => {
     try {
       setError("");
-      setLoading(true);
 
       const client = window.google.accounts.oauth2.initTokenClient({
         client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,

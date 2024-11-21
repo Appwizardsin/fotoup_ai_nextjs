@@ -12,8 +12,6 @@ const AuthModal = ({ isOpen, onClose }) => {
   const handleGoogleSignIn = async () => {
     try {
       setError("");
-      setLoading(true);
-
       // Load the Google API client
       const client = window.google.accounts.oauth2.initTokenClient({
         client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
