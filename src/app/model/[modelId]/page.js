@@ -94,6 +94,7 @@ export default function SingleModelPage() {
         message: error.response?.data?.message || "Error processing image",
         details: error.response?.data?.error || error.message,
       });
+      setProcessingImageProgress(0);
     } finally {
       setIsProcessing(false);
       setProcessingImageProgress(0);

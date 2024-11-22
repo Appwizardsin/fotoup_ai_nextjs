@@ -108,7 +108,7 @@ function MyImagesPage({ user }) {
                     height={400}
                     src={cleanImageUrl(image.url)}
                     alt="Generated image"
-                    className="w-full h-auto object-contain"
+                    className="w-full h-auto object-cover"
                   />
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity">
                     <p className="text-white text-sm">
@@ -151,7 +151,7 @@ function MyImagesPage({ user }) {
                       height={400}
                       src={cleanImageUrl(selectedImage.url)}
                       alt="Selected image"
-                      className="w-60 h-auto rounded-lg"
+                      className="w-auto h-[50vh] md:h-[60vh] rounded-lg object-contain"
                     />
                   </div>
                   <button

@@ -51,29 +51,36 @@ const ResultSection = ({
           {isProcessing ? (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
-                {/* Loading bar */}
-                <div className="relative pt-1">
-                  <div className="flex mb-2 items-center justify-between">
-                    <div>
-                      <span className="text-xs font-semibold inline-block py-1 uppercase">
-                        Processing...
-                      </span>
+                {progress === 100 ? (
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                    <span className="text-xs font-semibold">Finalizing...</span>
+                  </div>
+                ) : (
+                  /* Loading bar */
+                  <div className="relative pt-1">
+                    <div className="flex mb-2 items-center justify-between">
+                      <div>
+                        <span className="text-xs font-semibold inline-block py-1 uppercase">
+                          Processing...
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-xs font-semibold inline-block py-1 uppercase">
+                          {progress}%
+                        </span>
+                      </div>
                     </div>
-                    <div>
-                      <span className="text-xs font-semibold inline-block py-1 uppercase">
-                        {progress}%
-                      </span>
+                    <div className="flex mb-2 items-center justify-between">
+                      <div className="w-full bg-gray-200 rounded-full h-2.5 mb-2">
+                        <div
+                          className="bg-blue-600 h-2.5 rounded-full"
+                          style={{ width: `${progress}%` }}
+                        ></div>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex mb-2 items-center justify-between">
-                    <div className="w-full bg-gray-200 rounded-full h-2.5 mb-2">
-                      <div
-                        className="bg-blue-600 h-2.5 rounded-full"
-                        style={{ width: `${progress}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
           ) : model.mainImage ? (
