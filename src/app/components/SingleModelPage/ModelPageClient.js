@@ -118,7 +118,7 @@ export default function ModelPageClient({ initialModel }) {
   return (
     <div className="container mx-auto px-4 py-4 sm:py-8 relative">
       {/* Mobile Process Button */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 p-4 border-t border-gray-800 z-50">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 border-t border-gray-800 z-50">
         <div className="container mx-auto">
           <ProcessButton
             isProcessing={isProcessing}

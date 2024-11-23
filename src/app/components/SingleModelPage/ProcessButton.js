@@ -27,7 +27,7 @@ const ProcessButton = ({
           !allRequiredFieldsFilled ||
           (user && user.credits < (model.creditCost || 0))
         }
-        className={`w-full py-2 px-4 rounded-lg text-white ${
+        className={`w-full py-2 px-4 md:rounded-lg text-white ${
           isProcessing ||
           !allRequiredFieldsFilled ||
           (user && user.credits < (model.creditCost || 0))
