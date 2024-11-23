@@ -1,5 +1,6 @@
 import { home } from "../services/api";
 import ClientSlider from "./components/ClientSlider";
+import Link from 'next/link';
 
 export default async function Home() {
   let homeData;
@@ -20,12 +21,12 @@ export default async function Home() {
             Error loading content
           </h2>
           <p className="text-gray-400 mb-4">{error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+          <Link
+            href="/"
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg inline-block"
           >
-            Try Again
-          </button>
+            Go to Home Page
+          </Link>
         </div>
       </div>
     );
