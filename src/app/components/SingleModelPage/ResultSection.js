@@ -48,17 +48,8 @@ const ResultSection = ({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-2">
+      <div className="mb-2">
         <h2 className="block text-sm font-medium text-gray-200">Result</h2>
-        {processedImage && (
-          <button
-            onClick={handleDownload}
-            className="flex items-center gap-2 px-3 py-1 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors"
-          >
-            <FiDownload className="w-4 h-4" />
-            <span>Download</span>
-          </button>
-        )}
       </div>
 
       {error ? (
@@ -94,13 +85,22 @@ const ResultSection = ({
                   )}`}
                   className="flex flex-col items-center"
                 >
-                  <div className="w-12 h-12 flex items-center justify-center bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors mb-1">
+                  <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors mb-1">
                     <Icon className="w-6 h-6" />
                   </div>
                   <span className="text-xs text-gray-300">{button.label}</span>
                 </Link>
               );
             })}
+            <button
+              onClick={handleDownload}
+              className="flex flex-col items-center"
+            >
+              <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors mb-1">
+                <FiDownload className="w-6 h-6" />
+              </div>
+              <span className="text-xs text-gray-300">Download</span>
+            </button>
           </div>
         </div>
       ) : (
