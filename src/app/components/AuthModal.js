@@ -19,6 +19,7 @@ const AuthModal = ({ isOpen, onClose }) => {
         callback: async (response) => {
           if (response.access_token) {
             try {
+              setLoading(true);
               const result = await auth.googleLogin(response.access_token);
               if (result.token) {
                 await signIn(result.token);
