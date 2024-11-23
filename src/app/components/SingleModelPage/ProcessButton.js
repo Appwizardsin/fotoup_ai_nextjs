@@ -49,11 +49,11 @@ const ProcessButton = ({
           )}
         </div>
       </button>
-      {!user && (
+      {/* {!user && (
         <p className="text-sm text-gray-400 text-center">
           Sign in to process images
         </p>
-      )}
+      )} */}
     </div>
   );
 };
