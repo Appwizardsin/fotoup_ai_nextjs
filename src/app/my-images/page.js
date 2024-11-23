@@ -1,10 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { FiChevronLeft, FiChevronRight, FiDownload, FiX } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight, FiDownload, FiX, FiMaximize2 } from "react-icons/fi";
+import { BiUpArrowAlt } from "react-icons/bi";
+import { MdOutlineAutoFixHigh } from "react-icons/md";
+import { RxScissors } from "react-icons/rx";
 import withAuth from "../components/withAuth";
 import { users } from "@/services/api";
 import Image from "next/image";
+import Link from "next/link";
 
 function MyImagesPage({ user }) {
   const [images, setImages] = useState([]);
@@ -13,6 +17,33 @@ function MyImagesPage({ user }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [selectedImage, setSelectedImage] = useState(null);
+
+  const ENHANCEMENT_BUTTONS = [
+    {
+      id: "upscale",
+      label: "Upscale",
+      modelId: "673de2326492be4ae09f93db",
+      icon: BiUpArrowAlt,
+    },
+    {
+      id: "remove-bg",
+      label: "Remove BG",
+      modelId: "673de2f06492be4ae09f93df",
+      icon: RxScissors,
+    },
+    {
+      id: "beautify",
+      label: "Beautify",
+      modelId: "673de4176492be4ae09f93e5",
+      icon: MdOutlineAutoFixHigh,
+    },
+    {
+      id: "expand",
+      label: "Expand",
+      modelId: "673de4176492be4ae09f93e5",
+      icon: FiMaximize2,
+    },
+  ];
 
   useEffect(() => {
     fetchImages(currentPage);
@@ -110,7 +141,7 @@ function MyImagesPage({ user }) {
                     alt="Generated image"
                     className="w-full h-auto object-cover"
                   />
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity hidden md:block">
                     <p className="text-white text-sm">
                       Created: {new Date(image.createdAt).toLocaleDateString()}
                     </p>
@@ -136,7 +167,7 @@ function MyImagesPage({ user }) {
                 onClick={() => setSelectedImage(null)}
               >
                 <div
-                  className="relative max-w-3xl max-h-[80vh] bg-gray-800 rounded-lg p-4"
+                  className="relative max-w-3xl w-full bg-gray-800 rounded-lg p-4"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <button
@@ -145,25 +176,46 @@ function MyImagesPage({ user }) {
                   >
                     <FiX className="w-6 h-6" />
                   </button>
-                  <div className="h-full overflow-auto">
+                  <div className="h-full">
                     <Image
-                      width={400}
-                      height={400}
+                      width={800}
+                      height={800}
                       src={cleanImageUrl(selectedImage.url)}
                       alt="Selected image"
-                      className="w-auto h-[50vh] md:h-[60vh] rounded-lg object-contain"
+                      className="w-auto h-[50vh] md:h-[60vh] mx-auto rounded-lg object-contain"
                     />
                   </div>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      downloadImage(cleanImageUrl(selectedImage.url));
-                    }}
-                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-                  >
-                    <FiDownload className="inline-block mr-1" />
-                    Download
-                  </button>
+                  <div className="mt-4 flex justify-center gap-4">
+                    {ENHANCEMENT_BUTTONS.map((button) => {
+                      const Icon = button.icon;
+                      return (
+                        <Link
+                          key={button.id}
+                          href={`/model/${button.modelId}?imageUrl=${encodeURIComponent(
+                            cleanImageUrl(selectedImage.url)
+                          )}`}
+                          className="flex flex-col items-center"
+                        >
+                          <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors mb-1">
+                            <Icon className="w-6 h-6" />
+                          </div>
+                          <span className="text-xs text-gray-300">{button.label}</span>
+                        </Link>
+                      );
+                    })}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        downloadImage(cleanImageUrl(selectedImage.url));
+                      }}
+                      className="flex flex-col items-center"
+                    >
+                      <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors mb-1">
+                        <FiDownload className="w-6 h-6" />
+                      </div>
+                      <span className="text-xs text-gray-300">Download</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
