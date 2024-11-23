@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const API_BASE_URL = "https://i23wsqntum.us-east-1.awsapprunner.com/api";
-// const API_BASE_URL = "http://localhost:3030/api";
+// const API_BASE_URL = "https://i23wsqntum.us-east-1.awsapprunner.com/api";
+const API_BASE_URL = "http://localhost:3030/api";
 
 // Create a function to get the API instance with optional token
 const createAPI = (token) => {
@@ -59,6 +59,12 @@ export const models = {
   run: async (data) => {
     const api = createAPI(getToken());
     const response = await api.post("/models/run", data);
+    return response.data;
+  },
+
+  getByCategory: async (category, params = {}) => {
+    const api = createAPI(getToken());
+    const response = await api.get(`/models/category/${category}`, { params });
     return response.data;
   },
 };

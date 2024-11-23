@@ -108,9 +108,17 @@ export default async function Home() {
       {/* Filter Categories */}
       {Object.entries(homeData.filters).map(([category, models]) => (
         <div key={category} className="mb-4 md:mb-8">
-          <h2 className="text-base md:text-3xl font-bold text-white mb-2 md:mb-4 capitalize px-1">
-            {category}
-          </h2>
+          <div className="flex justify-between items-center mb-2 md:mb-4 px-1">
+            <h2 className="text-base md:text-3xl font-bold text-white capitalize">
+              {category}
+            </h2>
+            <a
+              href={`/category/${category}`}
+              className="text-xs md:text-sm text-gray-200 hover:text-grey-300 transition-colors inline-block px-2 py-1 bg-blue-100 hover:bg-blue-800 bg-opacity-10 rounded-lg"
+            >
+              View All
+            </a>
+          </div>
           <div className="px-1 md:px-2">
             <ClientSlider
               items={models}
