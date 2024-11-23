@@ -1,7 +1,39 @@
 "use client";
 
 import Image from "next/image";
-import { FiDownload } from "react-icons/fi";
+import { FiDownload, FiMaximize2 } from "react-icons/fi";
+import { BiUpArrowAlt } from "react-icons/bi";
+import { MdOutlineAutoFixHigh } from "react-icons/md";
+import { RxScissors } from "react-icons/rx";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+
+const ENHANCEMENT_BUTTONS = [
+  {
+    id: "upscale",
+    label: "Upscale",
+    modelId: "673de2326492be4ae09f93db",
+    icon: BiUpArrowAlt,
+  },
+  {
+    id: "remove-bg",
+    label: "Remove BG",
+    modelId: "673de2f06492be4ae09f93df",
+    icon: RxScissors,
+  },
+  {
+    id: "beautify",
+    label: "Beautify",
+    modelId: "673de4176492be4ae09f93e5",
+    icon: MdOutlineAutoFixHigh,
+  },
+  {
+    id: "expand",
+    label: "Expand",
+    modelId: "673de4176492be4ae09f93e5",
+    icon: FiMaximize2,
+  },
+];
 
 const ResultSection = ({
   processedImage,
@@ -11,6 +43,9 @@ const ResultSection = ({
   handleDownload,
   progress,
 }) => {
+  const searchParams = useSearchParams();
+  const presetImageUrl = searchParams.get("imageUrl");
+
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
@@ -38,13 +73,35 @@ const ResultSection = ({
           )}
         </div>
       ) : processedImage ? (
-        <div className="border-2 border-dashed border-gray-700 rounded-lg h-[60vh] md:h-[70vh] relative">
-          <Image
-            src={processedImage}
-            alt="Processed Result"
-            fill
-            className="rounded-lg object-contain"
-          />
+        <div>
+          <div className="border-2 border-dashed border-gray-700 rounded-lg h-[40vh] md:h-[60vh] relative">
+            <Image
+              src={processedImage}
+              alt="Processed Result"
+              fill
+              className="rounded-lg object-contain"
+            />
+          </div>
+
+          <div className="mt-4 flex justify-center gap-4">
+            {ENHANCEMENT_BUTTONS.map((button) => {
+              const Icon = button.icon;
+              return (
+                <Link
+                  key={button.id}
+                  href={`/model/${button.modelId}?imageUrl=${encodeURIComponent(
+                    processedImage
+                  )}`}
+                  className="flex flex-col items-center"
+                >
+                  <div className="w-12 h-12 flex items-center justify-center bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors mb-1">
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <span className="text-xs text-gray-300">{button.label}</span>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       ) : (
         <div className="border-2 border-dashed border-gray-700 rounded-lg h-[40vh] md:h-[70vh] relative">
@@ -82,6 +139,10 @@ const ResultSection = ({
                   </div>
                 )}
               </div>
+            </div>
+          ) : presetImageUrl ? (
+            <div className="absolute inset-0 flex items-center justify-center text-gray-400">
+              Your processed image will appear here
             </div>
           ) : model.mainImage ? (
             <Image
