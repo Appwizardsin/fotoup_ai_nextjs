@@ -87,6 +87,7 @@ export default function SearchPage() {
           {modelList.map((model) => (
             <Link href={`/model/${model._id}`} key={model._id}>
               <ModelCard
+                modelId={model._id}
                 title={model.name}
                 description={model.description}
                 imageUrl={model.mainImage}
